@@ -1,5 +1,4 @@
-const { MongoClient } = require('mongodb');
-const { ObjectId } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const uri = require("../config/atlas-uri");
 
 const client = new MongoClient(uri);
@@ -9,8 +8,19 @@ const ordersCollection = client.db(dbname).collection('orders');
 const orderModel = {
   placeOrder: async (orderData) => {
     try {
-      // Insert the order data into the orders collection
-      await ordersCollection.insertOne(orderData);
+      // Extract the customerName from orderData
+      const { cart, total, customerName } = orderData;
+
+      // Construct the order object with customerName
+      const order = {
+        cart,
+        total,
+        customerName,
+        // Other order details such as date, status, etc.
+      };
+
+      // Insert the order into the orders collection
+      await ordersCollection.insertOne(order);
       return { success: true, message: 'Order placed successfully' };
     } catch (err) {
       console.error(err);
@@ -26,7 +36,7 @@ const orderModel = {
     try {
       // Use a MongoDB update operation to update the order's status
       const result = await ordersCollection.updateOne(
-        { _id: ObjectId(orderId) },
+        { _id: new ObjectId(orderId) },
         { $set: { status } }
       );
 

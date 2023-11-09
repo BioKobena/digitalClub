@@ -1,11 +1,9 @@
 const orderModel = require('../models/orderModel');
 
- // Import the order model
-
 const orderController = {
   getOrders: async (req, res) => {
     try {
-      const orders = await orderModel.getOrders(); // Use the order model to retrieve orders
+      const orders = await orderModel.getOrders();
       res.json(orders);
     } catch (err) {
       console.error(err);
@@ -21,7 +19,6 @@ const updateOrderStatus = async (req, res) => {
   const { status } = req.body;
 
   try {
-    // Call the corresponding function in the orderModel to update the status
     const result = await orderModel.updateOrderStatus(orderId, status);
 
     if (result.success) {
@@ -37,7 +34,6 @@ const updateOrderStatus = async (req, res) => {
 
 module.exports = {
   getOrders: orderController.getOrders,
-  updateOrderStatus, 
-  // Add the updateOrderStatus function to the exports
+  updateOrderStatus,
   // Other controller functions related to orders
 };
