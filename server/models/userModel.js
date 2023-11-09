@@ -20,6 +20,10 @@ const userModel = {
   findUserByEmail: async (email) => {
     return await usersCollection.findOne({ email });
   },
+
+  findUserByUsername: async (username) => {
+    return await usersCollection.findOne({ username });
+  },
 };
 
 module.exports = userModel;

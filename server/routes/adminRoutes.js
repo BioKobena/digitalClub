@@ -11,7 +11,9 @@ router.post('/login', async (req, res) => {
   if (admin) {
     // Check password and authenticate admin
     if (password === admin.password) {
-      res.json({ message: 'Admin login successful' });
+      // Exclude the 'password' field from the response
+      const { password, ...adminWithoutPassword } = admin;
+      res.json({ message: 'Admin login successful', admin: adminWithoutPassword });
     } else {
       res.status(401).json({ error: 'Invalid password' });
     }

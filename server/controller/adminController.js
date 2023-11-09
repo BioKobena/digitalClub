@@ -8,9 +8,22 @@ const adminCollection = client.db(dbname).collection('administrators');
 const adminController = {
   adminLogin: async (req, res) => {
     try {
-      // Admin login logic
-      // ...
-      res.json({ message: 'Admin login successful' });
+      const { username, password } = req.body;
+
+      // Check if the admin exists
+      const admin = await adminCollection.findOne({ username });
+
+      if (!admin) {
+        return res.status(401).json({ error: 'Admin not found' });
+      }
+
+      // Check if the provided password matches the stored password
+      if (password === admin.password) {
+        // If username and password are correct, consider the login successful
+        res.json({ message: 'Admin login successful' });
+      } else {
+        res.status(401).json({ error: 'Invalid password' });
+      }
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Admin login failed' });
