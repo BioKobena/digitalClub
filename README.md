@@ -1,3 +1,1 @@
-# ccd
-# ccdApp
 # digitalClub
